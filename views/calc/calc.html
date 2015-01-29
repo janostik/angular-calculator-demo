@@ -74,7 +74,7 @@
             <!--empty space-->
             <div class="col-md-1"></div>
             <!--operations-->
-            <div class="btn-group-vertical col-md-3" role="group">
+            <div class="btn-group col-md-3" ng-class="{'btn-group-vertical': getWidth() >= 1000, 'btn-group-justified': getWidth() < 1000}" role="group">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default" ng-click="pressed('/')" ng-disabled="!isNumberLast() || isStart()">
                         <h4>/</h4></button>

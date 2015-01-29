@@ -9,9 +9,14 @@ angular.module('calcApp.calc', ['ngRoute'])
         });
     }])
 
-    .controller('CalcCtrl', ['$scope', 'historyService', '$modal', function ($scope, historyService, $modal) {
+    .controller('CalcCtrl', ['$scope', 'historyService', '$modal', '$window',function ($scope, historyService, $modal, $window) {
         $scope.expression = "0";
         var finished = true;
+
+        //Vertical button group not scaling when small screen. Function used for conditional ng-class.
+        $scope.getWidth = function() {
+            return $window.innerWidth;
+        };
 
         $scope.isExpressionValid = function () {
             return /^([-]?[0-9]*\.?[0-9]+[\/\+\-\*])+([0-9]*\.?[0-9]+)$/.test($scope.expression);
