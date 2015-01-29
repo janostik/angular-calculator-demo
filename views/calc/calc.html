@@ -1,0 +1,107 @@
+<br/>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <!--Display-->
+        <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default btn-lg" type="button" ng-click="showHistory()"><i class="fa fa-history"></i></button>
+              </span>
+            <input type="text" class="form-control expression input-lg" ng-disabled="true" value="{{ expression | limitTo : 30 }}">
+        </div>
+        <br />
+        <!--Button groups-->
+        <div class="row">
+            <!--Numbers-->
+            <div class="col-md-8">
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('1')"><h4 class="key">1</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('2')"><h4 class="key">2</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('3')"><h4 class="key">3</h4>
+                        </button>
+                    </div>
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('4')"><h4 class="key">4</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('5')"><h4 class="key">5</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('6')"><h4 class="key">6</h4>
+                        </button>
+                    </div>
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('7')"><h4 class="key">7</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('8')"><h4 class="key">8</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('9')"><h4 class="key">9</h4>
+                        </button>
+                    </div>
+                </div>
+                <div class="btn-group btn-group-justified" role="group">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('0')"><h4 class="key">0</h4>
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="pressed('.')"
+                                ng-disabled="containsDelimiter()"><h4 class="key">.</h4></button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger" ng-click="clear()"><h4 class="key">Clear</h4>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--empty space-->
+            <div class="col-md-1"></div>
+            <!--operations-->
+            <div class="btn-group-vertical col-md-3" role="group">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-click="pressed('/')" ng-disabled="!isNumberLast() || isStart()">
+                        <h4>/</h4></button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-click="pressed('*')" ng-disabled="!isNumberLast() || isStart()">
+                        <h4>*</h4></button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-click="pressed('+')" ng-disabled="!isNumberLast() || isStart()">
+                        <h4>+</h4></button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" ng-click="pressed('-')" ng-disabled="!isNumberLast()">
+                        <h4>-</h4></button>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <!--Get result button-->
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-success btn-result" ng-disabled="!isExpressionValid()"
+                        ng-click="eval()"><h4>Compute</h4></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>

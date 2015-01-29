@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h3 class="modal-title">Calc history</h3>
+</div>
+<div class="modal-body">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Expression</th>
+                    <th>Result</th>
+                    <th>-</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="entry in history | orderBy:timestamp">
+                    <td>{{entry.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{entry.exp}}</td>
+                    <td>{{entry.result}}</td>
+                    <td><i class="fa" ng-class="{'fa-check': entry.success, 'fa-times': !entry.success}"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="close()">Close</button>
+    <button class="btn btn-danger" ng-click="clear()">Clear history <i class="fa fa-trash"></i></button>
+</div>
