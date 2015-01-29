@@ -11,6 +11,9 @@ angular.module('calcApp.calc', ['ngRoute'])
 
     .controller('CalcCtrl', ['$scope', 'historyService', '$modal', '$window',function ($scope, historyService, $modal, $window) {
         $scope.expression = "0";
+        $scope.trace = "";
+        var buffer = null;
+        var action = null;
         var finished = true;
 
         //Vertical button group not scaling when small screen. Function used for conditional ng-class.
@@ -18,8 +21,13 @@ angular.module('calcApp.calc', ['ngRoute'])
             return $window.innerWidth;
         };
 
+        $scope.getAction = function() {
+            return action;
+        };
+
         $scope.isExpressionValid = function () {
-            return /^([-]?[0-9]*\.?[0-9]+[\/\+\-\*])+([0-9]*\.?[0-9]+)$/.test($scope.expression);
+            //return /^([-]?[0-9]*\.?[0-9]+[\/\+\-\*])+([0-9]*\.?[0-9]+)$/.test($scope.expression);
+            return buffer !== null && action !== null && $scope.expression.length > 0;
         };
 
         $scope.isNumberLast = function() {
@@ -28,7 +36,7 @@ angular.module('calcApp.calc', ['ngRoute'])
 
         $scope.isStart = function() {
             return finished;
-        }
+        };
 
         $scope.containsDelimiter = function () {
             //Contains delimiter or ends with +|/|-|*
@@ -40,23 +48,53 @@ angular.module('calcApp.calc', ['ngRoute'])
             if($scope.expression === "0" && key !== ".") {
                 $scope.expression = "";
             }
-            $scope.expression += key;
-            finished = false;
+            if(!/[0-9\.]/.test(key) && !finished) {
+                processAction();
+                action = key;
+                finished = true;
+            } else {
+                $scope.expression += key;
+                finished = false;
+            }
+            $scope.trace += key;
         };
 
+        function processAction() {
+            if(buffer !== null && action !== null) {
+                buffer = parseFloat(buffer);
+                switch (action) {
+                    case "+": buffer += parseFloat($scope.expression); break;
+                    case "-": buffer -= parseFloat($scope.expression); break;
+                    case "*": buffer *= parseFloat($scope.expression); break;
+                    case "/": buffer /= parseFloat($scope.expression); break;
+                }
+                $scope.expression = buffer;
+            } else {
+                buffer = $scope.expression;
+            }
+        }
+
         $scope.clear = function () {
-            if(finished) return;
-            historyService.push({exp: $scope.expression, success: false });
+            if($scope.trace.length > 0) {
+                historyService.push({exp: $scope.trace, success: false });
+            }
             $scope.expression = "0";
-            finished = true;
+            reset();
         };
 
         $scope.eval = function() {
-            var result = eval($scope.expression);
-            historyService.push({exp: $scope.expression, success: true, result: result });
-            $scope.expression = result;
-            finished = true;
+            processAction();
+            historyService.push({exp: $scope.trace, success: true, result: buffer });
+            $scope.expression = buffer;
+            reset();
         };
+
+        function reset() {
+            buffer = null;
+            action = null;
+            $scope.trace = "";
+            finished = true;
+        }
 
         //Modal window
         $scope.showHistory = function () {
